@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clock Widget</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: rgb(86, 90, 102);
+            margin: 0;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .clock-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+        
+        .clock-dial {
+            width: 200px;
+            height: 200px;
+            border: 10px solid #3ea6ae;
+            border-radius: 50%;
+            position: relative;
+        }
+        
+        .point {
+            width: 10px;
+            height: 10px;
+            background-color: #79e581;
+            border-radius: 50%;
+            position: absolute;
+            top: 95px;
+            left: 95px;
+        }
+        
+        .hour {
+            font-size: 15px;
+            font-weight: bold;
+            color: #00040a;
+            position: absolute;
+            transform: translate(-50%, -50%);
+        }
+        
+        .hour-1 { top: 23px; left: 150px; }
+        .hour-2 { top: 55px; left: 180px; }
+        .hour-3 { top: 100px; left: 195px; }
+        .hour-4 { top: 145px; left: 180px; }
+        .hour-5 { top: 177px; left: 150px; }
+        .hour-6 { top: 192px; left: 100px; }
+        .hour-7 { top: 177px; left: 50px; }
+        .hour-8 { top: 145px; left: 19px; }
+        .hour-9 { top: 100px; left: 6px; }
+        .hour-10 { top: 55px; left: 22px; }
+        .hour-11 { top: 23px; left: 50px; }
+        .hour-12 { top: 7px; left: 100px; }
+        
+        .city-label {
+            color: aqua;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        .minute-hand-wrapper, .hour-hand-wrapper, .second-hand-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transform-origin: 50% 100%;
+        }
+        
+        .minute-hand .hand, .hour-hand .hand, .second-hand .hand {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform-origin: 50% 100%; /* Adjusted to ensure hands are centered */
+            transform: translateX(-50%); /* Center the hands horizontally */
+        }
+        
+        .minute-hand .hand {
+            width: 4px;
+            height: 85px;
+            background-color: #010008;
+        }
+        
+        .hour-hand .hand {
+            width: 4px;
+            height: 60px;
+            background-color: #0a358b;
+        }
+        
+        .second-hand .hand {
+            width: 2px;
+            height: 90px;
+            background-color: #be3743;
+        }
+        
+        .am-pm-label {
+            position: absolute;
+            top: 40px; /* Adjust this value to position below the number 12 but above the center */
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #08f633;
+        }        
+    </style>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analog Clocks</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="clock-wrapper">
+            <div class="clock-dial" id="clock-la">
+                <div class="point"></div>
+                <!-- Hour markers -->
+                <div class="hour hour-1">1</div>
+                <div class="hour hour-2">2</div>
+                <div class="hour hour-3">3</div>
+                <div class="hour hour-4">4</div>
+                <div class="hour hour-5">5</div>
+                <div class="hour hour-6">6</div>
+                <div class="hour hour-7">7</div>
+                <div class="hour hour-8">8</div>
+                <div class="hour hour-9">9</div>
+                <div class="hour hour-10">10</div>
+                <div class="hour hour-11">11</div>
+                <div class="hour hour-12">12</div>
+                <!-- Hands -->
+                <div class="minute-hand-wrapper" id="minute-hand-clock-la">
+                    <div class="minute-hand">
+                        <div class="hand"></div>
+                        <div class="arrow"></div>
+                    </div>
+                </div>
+                <div class="hour-hand-wrapper" id="hour-hand-clock-la">
+                    <div class="hour-hand">
+                        <div class="hand"></div>
+                        <div class="arrow"></div>
+                    </div>
+                </div>
+                <div class="second-hand-wrapper" id="second-hand-clock-la">
+                    <div class="second-hand">
+                        <div class="hand"></div>
+                    </div>
+                </div>
+                <div class="am-pm-label" id="am-pm-clock-la"></div>
+            </div>
+            <div class="city-label">Los Angeles</div>
+        </div>
+        <!-- Repeat for other cities -->
+        <div class="clock-wrapper">
+            <div class="clock-dial" id="clock-chicago">
+                <div class="point"></div>
+                <!-- Hour markers -->
+                <div class="hour hour-1">1</div>
+                <div class="hour hour-2">2</div>
+                <div class="hour hour-3">3</div>
+                <div class="hour hour-4">4</div>
+                <div class="hour hour-5">5</div>
+                <div class="hour hour-6">6</div>
+                <div class="hour hour-7">7</div>
+                <div class="hour hour-8">8</div>
+                <div class="hour hour-9">9</div>
+                <div class="hour hour-10">10</div>
+                <div class="hour hour-11">11</div>
+                <div class="hour hour-12">12</div>
+                <!-- Hands -->
+                <div class="minute-hand-wrapper" id="minute-hand-clock-chicago">
+                    <div class="minute-hand">
+                        <div class="hand"></div>
+                        <div class="arrow"></div>
+                    </div>
+                </div>
+                <div class="hour-hand-wrapper" id="hour-hand-clock-chicago">
+                    <div class="hour-hand">
+                        <div class="hand"></div>
+                        <div class="arrow"></div>
+                    </div>
+                </div>
+                <div class="second-hand-wrapper" id="second-hand-clock-chicago">
+                    <div class="second-hand">
+                        <div class="hand"></div>
+                    </div>
+                </div>
+                <div class="am-pm-label" id="am-pm-clock-chicago"></div>
+            </div>
+            <div class="city-label">Chicago</div>
+        </div>
+        <div class="clock-wrapper">
+            <div class="clock-dial" id="clock-hawaii">
+                <div class="point"></div>
+                <!-- Hour markers -->
+                <div class="hour hour-1">1</div>
+                <div class="hour hour-2">2</div>
+                <div class="hour hour-3">3</div>
+                <div class="hour hour-4">4</div>
+                <div class="hour hour-5">5</div>
+                <div class="hour hour-6">6</div>
+                <div class="hour hour-7">7</div>
+                <div class="hour hour-8">8</div>
+                <div class="hour hour-9">9</div>
+                <div class="hour hour-10">10</div>
+                <div class="hour hour-11">11</div>
+                <div class="hour hour-12">12</div>
+                <!-- Hands -->
+                <div class="minute-hand-wrapper" id="minute-hand-clock-hawaii">
+                    <div class="minute-hand">
+                        <div class="hand"></div>
+                        <div class="arrow"></div>
+                    </div>
+                </div>
+                <div class="hour-hand-wrapper" id="hour-hand-clock-hawaii">
+                    <div class="hour-hand">
+                        <div class="hand"></div>
+                        <div class="arrow"></div>
+                    </div>
+                </div>
+                <div class="second-hand-wrapper" id="second-hand-clock-hawaii">
+                    <div class="second-hand">
+                        <div class="hand"></div>
+                    </div>
+                </div>
+                <div class="am-pm-label" id="am-pm-clock-hawaii"></div>
+            </div>
+            <div class="city-label">Hawaii</div>
+        </div>
+        <div class="clock-wrapper">
+            <div class="clock-dial" id="clock-london">
+                <div class="point"></div>
+                <!-- Hour markers -->
+                <div class="hour hour-1">1</div>
+                <div class="hour hour-2">2</div>
+                <div class="hour hour-3">3</div>
+                <div class="hour hour-4">4</div>
+                <div class="hour hour-5">5</div>
+                <div class="hour hour-6">6</div>
+                <div class="hour hour-7">7</div>
+                <div class="hour hour-8">8</div>
+                <div class="hour hour-9">9</div>
+                <div class="hour hour-10">10</div>
+                <div class="hour hour-11">11</div>
+                <div class="hour hour-12">12</div>
+                <!-- Hands -->
+                <div class="minute-hand-wrapper" id="minute-hand-clock-london">
+                    <div class="minute-hand">
+                        <div class="hand"></div>
+                        <div class="arrow"></div>
+                    </div>
+                </div>
+                <div class="hour-hand-wrapper" id="hour-hand-clock-london">
+                    <div class="hour-hand">
+                        <div class="hand"></div>
+                        <div class="arrow"></div>
+                    </div>
+                </div>
+                <div class="second-hand-wrapper" id="second-hand-clock-london">
+                    <div class="second-hand">
+                        <div class="hand"></div>
+                    </div>
+                </div>
+                <div class="am-pm-label" id="am-pm-clock-london"></div>
+            </div>
+            <div class="city-label">London</div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+<script>
+    const timeZones = {
+        "clock-la": "America/Los_Angeles",
+        "clock-chicago": "America/Chicago",
+        "clock-hawaii": "Pacific/Honolulu",
+        "clock-london": "Europe/London"
+    };
+    
+    function updateTime() {
+        for (const [clockId, timeZone] of Object.entries(timeZones)) {
+            const d = new Date(new Date().toLocaleString('en-US', { timeZone: timeZone }));
+            const second = d.getSeconds() * 6;
+            const minute = d.getMinutes() * 6 + d.getSeconds() * 0.1; // Smooth minute hand movement
+            const hour = (d.getHours() % 12) * 30 + d.getMinutes() * 0.5; // Smooth hour hand movement
+            const period = d.getHours() >= 12 ? 'PM' : 'AM';
+    
+            document.getElementById(`second-hand-${clockId}`).style.transform = `rotate(${second}deg)`;
+            document.getElementById(`minute-hand-${clockId}`).style.transform = `rotate(${minute}deg)`;
+            document.getElementById(`hour-hand-${clockId}`).style.transform = `rotate(${hour}deg)`;
+            document.getElementById(`am-pm-${clockId}`).textContent = period;
+        }
+    }
+    
+    setInterval(updateTime, 1000);
+    updateTime(); // Initial call to set the time immediately
+    
+</script>
+</body>
+</html>

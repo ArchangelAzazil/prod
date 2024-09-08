@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anton's Digital Clock with Multiple Time Zones</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #10101E;
+            flex-direction: column;
+        }
+        
+        .datetime {
+            color: #fff;
+            background: #10101e;
+            font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif';
+            width: 100%;
+            max-width: 340px;
+            padding: 15px 10px;
+            border: 3px solid #4fd5ba;
+            border-radius: 5px;
+            -webkit-box-reflect: below 1px linear-gradient(transparent, rgba(255, 255, 255, 0.1));
+            transition: 0.5s;
+            transition-property: background, box-shadow;
+            margin: 10px;
+        }
+        
+        .datetime:hover {
+            background: #4fd5ba;
+            box-shadow: 0 0 30px #4fd5ba;
+        }
+        
+        .date {
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: 3px;
+        }
+        
+        .time {
+            font-size: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .time span:not(:last-child){
+            position: relative;
+            margin: 0 6px;
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: 3px;
+        }
+        
+        .time span:last-child{
+            background: #3b8eaa;
+            font-size: 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-top: 10px;
+            padding: 0 5px;
+            border-radius: 3px;
+        }
+        
+        .time span#period.active {
+            background: #4fd5ba;
+        }
+        
+        .clock-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        .clock-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 70px;
+        }
+        
+        .clock-label {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #4fd5ba; /* Same color as the border */
+        }
+        
+        .clock {
+            width: 100%;
+            /*max-width: 200px; /* Adjust the width as needed */
+        }
+        
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .clock-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        
+            .clock-wrapper {
+                max-width: 100%;
+            }
+        }
+        
+    </style>
+</head>
+<body onload="initClocks()">
+    <div class="clock-container">
+        <div class="clock-wrapper">
+            <div class="clock-label">Los Angeles</div>
+            <div class="clock datetime">
+                <div class="date">
+                    <span id="dayname-la">Day</span>,
+                    <span id="month-la">Month</span>
+                    <span id="daynum-la">00</span>,
+                    <span id="year-la">Year</span>
+                </div>
+                <div class="time">
+                    <span id="hour-la">00</span>:
+                    <span id="minutes-la">00</span>:
+                    <span id="seconds-la">00</span>
+                    <span id="period-la">AM</span>
+                </div>
+            </div>
+        </div>
+        <div class="clock-wrapper">
+            <div class="clock-label">Chicago</div>
+            <div class="clock datetime">
+                <div class="date">
+                    <span id="dayname-chicago">Day</span>,
+                    <span id="month-chicago">Month</span>
+                    <span id="daynum-chicago">00</span>,
+                    <span id="year-chicago">Year</span>
+                </div>
+                <div class="time">
+                    <span id="hour-chicago">00</span>:
+                    <span id="minutes-chicago">00</span>:
+                    <span id="seconds-chicago">00</span>
+                    <span id="period-chicago">AM</span>
+                </div>
+            </div>
+        </div>
+        <div class="clock-wrapper">
+            <div class="clock-label">Hawaii</div>
+            <div class="clock datetime">
+                <div class="date">
+                    <span id="dayname-hawaii">Day</span>,
+                    <span id="month-hawaii">Month</span>
+                    <span id="daynum-hawaii">00</span>,
+                    <span id="year-hawaii">Year</span>
+                </div>
+                <div class="time">
+                    <span id="hour-hawaii">00</span>:
+                    <span id="minutes-hawaii">00</span>:
+                    <span id="seconds-hawaii">00</span>
+                    <span id="period-hawaii">AM</span>
+                </div>
+            </div>
+        </div>
+        <div class="clock-wrapper">
+            <div class="clock-label">London</div>
+            <div class="clock datetime">
+                <div class="date">
+                    <span id="dayname-london">Day</span>,
+                    <span id="month-london">Month</span>
+                    <span id="daynum-london">00</span>,
+                    <span id="year-london">Year</span>
+                </div>
+                <div class="time">
+                    <span id="hour-london">00</span>:
+                    <span id="minutes-london">00</span>:
+                    <span id="seconds-london">00</span>
+                    <span id="period-london">AM</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function updateClock(timezoneName, timezone) {
+            const now = new Date();
+            const options = {
+                timeZone: timezone,
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                hour12: true
+            };
+            const formatter = new Intl.DateTimeFormat('en-US', options);
+            const parts = formatter.formatToParts(now);
+        
+            const dayName = parts.find(part => part.type === 'weekday').value;
+            const month = parts.find(part => part.type === 'month').value;
+            const dayNum = parts.find(part => part.type === 'day').value;
+            const year = parts.find(part => part.type === 'year').value;
+            const hour = parts.find(part => part.type === 'hour').value;
+            const minutes = parts.find(part => part.type === 'minute').value;
+            const seconds = parts.find(part => part.type === 'second').value;
+            const period = parts.find(part => part.type === 'dayPeriod').value;
+        
+            document.getElementById(`dayname-${timezoneName}`).textContent = dayName;
+            document.getElementById(`month-${timezoneName}`).textContent = month;
+            document.getElementById(`daynum-${timezoneName}`).textContent = dayNum;
+            document.getElementById(`year-${timezoneName}`).textContent = year;
+            document.getElementById(`hour-${timezoneName}`).textContent = hour;
+            document.getElementById(`minutes-${timezoneName}`).textContent = minutes.toString().padStart(2, '0');
+            document.getElementById(`seconds-${timezoneName}`).textContent = seconds.toString().padStart(2, '0');
+            document.getElementById(`period-${timezoneName}`).textContent = period;
+        }
+        
+        function initClocks() {
+            initClock("la", "America/Los_Angeles");
+            initClock("chicago", "America/Chicago");
+            initClock("hawaii", "Pacific/Honolulu");
+            initClock("london", "Europe/London");
+        }
+        
+        function initClock(timezoneName, timezone) {
+            updateClock(timezoneName, timezone);
+            setInterval(() => updateClock(timezoneName, timezone), 1000);
+        }
+        
+        
+    </script>
+</body>
+</html>

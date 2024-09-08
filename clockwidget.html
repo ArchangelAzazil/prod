@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <style>
+    body {
+        width: 100%;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        background: rgb(0, 2, 7);
+    }
+    .center {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .clock {
+        width: 300px;
+        height: 300px;
+        position: relative;
+        background: rgb(169, 168, 214);
+        border-radius: 50%;
+    }
+    .numbers {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100px;
+        height: 255px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-direction: column;
+        font-family: "Albert Sans";
+        color: rgb(197, 204, 255);
+        font-size: 120px;
+        font-weight: 900;
+    }
+    .numbers span {
+        height: 85px;
+        line-height: 85px;
+    }
+    .numbers:nth-child(2) {
+        width: 265px;
+        height: 100px;
+        flex-direction: row;
+    }
+    .hours {
+        position: absolute;
+        width: 22px;
+        height: 100px;
+        background: rgb(40, 31, 72);
+        top: calc(50% - 11px);
+        left: calc(50% - 11px);
+        transform-origin: 11px 11px;
+        z-index: 1;
+        border-radius: 3mm;
+    }
+    .minutes {
+        position: absolute;
+        width: 6px;
+        height: 140px;
+        background: rgb(128, 125, 199);
+        top: calc(50% - 3px);
+        left: calc(50% - 3px);
+        transform-origin: 3px 3px;
+        z-index: 2;
+        border-radius: 1mm;
+    }
+    .seconds {
+        position: absolute;
+        width: 2px;
+        height: 140px;
+        background: rgb(128, 125, 199);
+        top: calc(50% - 1px);
+        left: calc(50% - 1px);
+        transform-origin: 1px 1px;
+        z-index: 3;
+        border-radius: 1mm;
+    }
+    .clock::before {
+        position: absolute;
+        content: "";
+        width: 10px;
+        height: 10px;
+        background: rgb(175, 110, 198);
+        top: calc(50% - 5px);
+        left: calc(50% - 5px);
+        z-index: 4;
+        border-radius: 50%;
+    }
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .clock {
+        width: 200px;
+        height: 200px;
+        margin: 20px;
+    }
+    .city-label {
+        color: aqua;
+        font-family: "Albert Sans";
+        font-size: 12px; /* Smaller font size */
+        text-align: center;
+    }
+    .city-label {
+        position: absolute;
+        top: 220px; /* Position below the clock */
+        left: 50%;
+        transform: translateX(-50%);
+        color: aqua;
+        font-family: "Albert Sans";
+        font-size: 12px; /* Smaller font size */
+        text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="clock">
+      <div class="city-label" data-city="US LA">US LA</div>
+      <div class="hours"></div>
+      <div class="minutes"></div>
+      <div class="seconds"></div>
+    </div>
+    <div class="clock">
+      <div class="city-label" data-city="US New York">US New York</div>
+      <div class="hours"></div>
+      <div class="minutes"></div>
+      <div class="seconds"></div>
+    </div>
+    <div class="clock">
+      <div class="city-label" data-city="US Hawaii">US Hawaii</div>
+      <div class="hours"></div>
+      <div class="minutes"></div>
+      <div class="seconds"></div>
+    </div>
+    <div class="clock">
+      <div class="city-label" data-city="US Chicago">US Chicago</div>
+      <div class="hours"></div>
+      <div class="minutes"></div>
+      <div class="seconds"></div>
+    </div>
+  </div>
+  <script>
+    const timeZones = {
+      "US LA": "America/Los_Angeles",
+      "US New York": "America/New_York",
+      "US Hawaii": "Pacific/Honolulu",
+      "US Chicago": "America/Chicago"
+    };
+
+    function updateTime(timeZone, cityLabel) {
+      const date = new Date(new Date().toLocaleString('en-US', { timeZone: timeZone }));
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+      const seconds = date.getSeconds();
+
+      const clockElement = document.querySelector(`.clock .city-label[data-city="${cityLabel}"]`);
+      if (!clockElement) {
+        console.error(`Clock element not found for ${cityLabel}`);
+        return;
+      }
+
+      const secondsPoint = clockElement.parentElement.querySelector(".seconds");
+      const minutesPoint = clockElement.parentElement.querySelector(".minutes");
+      const hoursPoint = clockElement.parentElement.querySelector(".hours");
+
+      if (!secondsPoint || !minutesPoint || !hoursPoint) {
+        console.error(`Clock hands not found for ${cityLabel}`);
+        return;
+      }
+
+      const hoursDeg = ((hours % 12) * 30) + (minutes / 2) + 180; // Adjust for minute hand movement and correct upside-down issue
+      const minutesDeg = (minutes * 6) + 180;
+      const secondsDeg = (seconds * 6) + 180;
+
+      // Apply the correct rotation direction
+      hoursPoint.style.transform = `rotate(${hoursDeg}deg)`;
+      minutesPoint.style.transform = `rotate(${minutesDeg}deg)`;
+      secondsPoint.style.transform = `rotate(${secondsDeg}deg)`;
+
+      // Update the city label with the current time
+      const period = hours >= 12 ? 'PM' : 'AM';
+      const displayHours = hours % 12 || 12; // Convert 0 to 12 for 12-hour format
+      clockElement.textContent = `${cityLabel}: ${displayHours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${period}`;
+    }
+
+    // Call updateTime for each time zone initially
+    for (const cityLabel in timeZones) {
+      updateTime(timeZones[cityLabel], cityLabel);
+    }
+
+    // Update the clocks every second
+    setInterval(() => {
+      for (const cityLabel in timeZones) {
+        updateTime(timeZones[cityLabel], cityLabel);
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
